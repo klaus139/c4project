@@ -4,6 +4,7 @@ import { Application } from "../models/applicationSchema.js";
 import { Job } from "../models/jobSchema.js";
 import cloudinary from "cloudinary";
 
+
 export const postApplication = catchAsyncErrors(async (req, res, next) => {
   const { role } = req.user;
   if (role === "Employer") {
@@ -16,10 +17,10 @@ export const postApplication = catchAsyncErrors(async (req, res, next) => {
   }
 
   const { resume } = req.files;
-  const allowedFormats = ["image/png", "image/jpeg", "image/webp"];
+  const allowedFormats = ["image/png", "image/jpeg", "image/webp", "application/pdf"];
   if (!allowedFormats.includes(resume.mimetype)) {
     return next(
-      new ErrorHandler("Invalid file type. Please upload a PNG file.", 400)
+      new ErrorHandler("Invalid file type", 400)
     );
   }
   const cloudinaryResponse = await cloudinary.uploader.upload(
